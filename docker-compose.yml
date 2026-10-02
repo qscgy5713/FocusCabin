@@ -1,0 +1,9 @@
+services:
+  focus-cabin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: focus-cabin
+    ports:
+      - "${PORT:-3000}:80"
+    restart: unless-stopped
