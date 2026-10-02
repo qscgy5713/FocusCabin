@@ -1,0 +1,7 @@
+{
+    email qscgy5713@gmail.com
+}
+
+focuscabin.duckdns.org {
+    reverse_proxy web:80
+}
