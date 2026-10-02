@@ -1,26 +1,15 @@
+# 與 shop 專案共用同一台 VM 與其 Caddy(80/443 由 shop-caddy 佔用),
+# 因此這裡不再啟動自己的 Caddy,只讓 web 加入 shop_internal 網路,
+# 由 shop 的 Caddyfile 以 focuscabin-web:80 反向代理。
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: focuscabin-web:latest
     container_name: focuscabin-web
     restart: unless-stopped
+    mem_limit: 64m
+    networks:
+      - shop_internal
 
-  caddy:
-    image: caddy:2-alpine
-    container_name: focuscabin-caddy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on:
-      - web
-
-volumes:
-  caddy_data:
-  caddy_config:
+networks:
+  shop_internal:
+    external: true
